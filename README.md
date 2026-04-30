@@ -41,6 +41,22 @@ The bridge operates in two directions:
 | `predictionMarketRecipientLift` | 2                | User    | USDC / USDT        | Explicit `bytes32`          | Prediction market |
 | `relayerLift`                   | 0                | Relayer | USDC               | Derived from user address   | Prediction market |
 
+
+## External Contract Dependencies
+- Chainlink USDC/ETH Feed\
+`CHAINLINK_USDC_ETH_FEED`: [0x986b5E1e1755e3C2440e960477f25201B0a8bbD4](https://etherscan.io/address/0x986b5E1e1755e3C2440e960477f25201B0a8bbD4)
+
+- Uniswap V3 USDC/WETH Pool\
+`UNISWAP_V3_USDC_WETH_POOL`: [0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640](https://etherscan.io/address/0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640)
+
+- Chainalysis Sanctions\
+`CHAINALYSIS_SANCTIONS`: [0x40C57923924B5c5c5455c48D93317139ADDaC8fb](https://etherscan.io/address/0x40C57923924B5c5c5455c48D93317139ADDaC8fb)
+
+- Tokens  
+  - `USDC`: [0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48](https://etherscan.io/address/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48)
+  - `USDT`: [0xdAC17F958D2ee523a2206206994597C13D831ec7](https://etherscan.io/address/0xdAC17F958D2ee523a2206206994597C13D831ec7)
+  - `WETH`: [0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2](https://etherscan.io/address/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)
+
 ## Development
 
 ### Setup

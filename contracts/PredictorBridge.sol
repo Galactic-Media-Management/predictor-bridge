@@ -56,9 +56,9 @@ contract PredictorBridge is IPredictorBridge, Initializable, IUniswapV3Callback,
    * @dev Immutable variables are stored in the implementation bytecode rather than proxy storage.
    * They therefore do not consume storage slots in the proxy and do not affect append-only storage layout rules.
    */
-  address public immutable FEED;
-  address public immutable POOL;
-  address public immutable SANCTIONS;
+  address public immutable CHAINLINK_USDC_ETH_FEED;
+  address public immutable UNISWAP_V3_USDC_WETH_POOL;
+  address public immutable CHAINALYSIS_SANCTIONS;
   address public immutable USDC;
   address public immutable USDT;
   address public immutable WETH;
@@ -129,9 +129,9 @@ contract PredictorBridge is IPredictorBridge, Initializable, IUniswapV3Callback,
       revert AddressIsZero();
     }
 
-    FEED = feed;
-    POOL = pool;
-    SANCTIONS = sanctions;
+    CHAINLINK_USDC_ETH_FEED = feed;
+    UNISWAP_V3_USDC_WETH_POOL = pool;
+    CHAINALYSIS_SANCTIONS = sanctions;
     USDC = usdc;
     USDT = usdt;
     WETH = weth;
@@ -144,7 +144,7 @@ contract PredictorBridge is IPredictorBridge, Initializable, IUniswapV3Callback,
   // ============================================================
 
   modifier checkAddress(address account) {
-    if (IChainalysis(SANCTIONS).isSanctioned(account)) revert AddressBlocked(account);
+    if (IChainalysis(CHAINALYSIS_SANCTIONS).isSanctioned(account)) revert AddressBlocked(account);
     _;
   }
 
@@ -624,7 +624,7 @@ contract PredictorBridge is IPredictorBridge, Initializable, IUniswapV3Callback,
    */
   function usdcEth() public view returns (uint256 price) {
     unchecked {
-      price = uint256(IChainlinkV3Aggregator(FEED).latestAnswer()) / 1e6;
+      price = uint256(IChainlinkV3Aggregator(CHAINLINK_USDC_ETH_FEED).latestAnswer()) / 1e6;
     }
   }
 
@@ -641,7 +641,7 @@ contract PredictorBridge is IPredictorBridge, Initializable, IUniswapV3Callback,
    */
   function refundRelayerCallback(address relayer, int256 balance) external {
     if (msg.sender != address(this)) revert InvalidCaller();
-    (, int256 amount1) = IUniswapV3Pool(POOL).swap(address(this), true, balance, MIN_SQRT_RATIO + 1, '');
+    (, int256 amount1) = IUniswapV3Pool(UNISWAP_V3_USDC_WETH_POOL).swap(address(this), true, balance, MIN_SQRT_RATIO + 1, '');
 
     unchecked {
       uint256 ethAmount = uint256(amount1 * -1);
@@ -666,7 +666,7 @@ contract PredictorBridge is IPredictorBridge, Initializable, IUniswapV3Callback,
     amount1Delta;
     data;
 
-    if (msg.sender != POOL) revert InvalidCaller();
+    if (msg.sender != UNISWAP_V3_USDC_WETH_POOL) revert InvalidCaller();
     IERC20(USDC).safeTransfer(msg.sender, uint256(amount0Delta));
   }
 
