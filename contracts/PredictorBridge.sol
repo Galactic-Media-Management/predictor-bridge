@@ -72,16 +72,16 @@ contract PredictorBridge is IPredictorBridge, Initializable, IUniswapV3Callback,
    * For upgrade safety, new storage variables MUST be appended only.
    * Existing storage declarations MUST NOT be reordered, removed, or have their types changed.
    */
-  uint256 private isAuthorBitmap;
-  uint256 private authorIsActiveBitmap;
+  uint256 internal isAuthorBitmap;
+  uint256 internal authorIsActiveBitmap;
   mapping(address => uint256) public t1AddressToId;
   mapping(bytes32 => uint256) public t2PubKeyToId;
   mapping(uint256 => address) public idToT1Address;
   mapping(uint256 => bytes32) public idToT2PubKey;
   mapping(bytes32 => bool) public isPublishedRootHash;
   mapping(address => int256) public relayerBalance;
-  mapping(uint256 => uint256) private usedLowers;
-  mapping(uint256 => uint256) private usedT2TxIds;
+  mapping(uint256 => uint256) internal usedLowers;
+  mapping(uint256 => uint256) internal usedT2TxIds;
   uint256 public numActiveAuthors;
   uint256 public nextAuthorId;
 
@@ -739,12 +739,12 @@ contract PredictorBridge is IPredictorBridge, Initializable, IUniswapV3Callback,
     }
   }
 
-  function _idToBitmap(uint32 id) private pure returns (uint256 bucket, uint256 mask) {
+  function _idToBitmap(uint32 id) internal pure returns (uint256 bucket, uint256 mask) {
     bucket = uint256(id) >> 8;
     mask = 1 << (uint256(id) & 255);
   }
 
-  function _initialiseAuthors(address[] calldata t1Addresses, bytes32[] calldata t1PubKeysLHS, bytes32[] calldata t1PubKeysRHS, bytes32[] calldata t2PubKeys) private {
+  function _initialiseAuthors(address[] calldata t1Addresses, bytes32[] calldata t1PubKeysLHS, bytes32[] calldata t1PubKeysRHS, bytes32[] calldata t2PubKeys) internal {
     uint256 numAuth = t1Addresses.length;
     if (numAuth < MIN_AUTHORS) revert NotEnoughAuthors();
     if (numAuth > MAX_AUTHORS) revert TooManyAuthors();

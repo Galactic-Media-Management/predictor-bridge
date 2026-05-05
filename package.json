@@ -13,6 +13,7 @@
     "gas": "npx hardhat test --gas-stats",
     "deploy:bridge:dev": "cross-env BRIDGE_ENV=dev npx hardhat run deploy/deploy-bridge.js --network sepolia",
     "deploy:bridge:testnet": "cross-env BRIDGE_ENV=testnet npx hardhat run deploy/deploy-bridge.js --network sepolia",
+    "deploy:bridge:testnet:resettable": "cross-env BRIDGE_ENV=testnet BRIDGE_CONTRACT=PredictorBridgeResettable npx hardhat run deploy/deploy-bridge.js --network sepolia",
     "deploy:bridge:mainnet": "cross-env BRIDGE_ENV=mainnet npx hardhat run deploy/deploy-bridge.js --network mainnet",
     "deploy:implementation:dev": "cross-env BRIDGE_ENV=dev npx hardhat run deploy/deploy-implementation.js --network sepolia",
     "deploy:implementation:testnet": "cross-env BRIDGE_ENV=testnet npx hardhat run deploy/deploy-implementation.js --network sepolia",

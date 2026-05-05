@@ -14,6 +14,7 @@ The contract supports standard ERC-20 bridging, permit-based lifts, and sponsore
 | Predictor Bridge | Mainnet | Production | TBD |
 | Predictor Bridge | Sepolia | Testnet | TBD |
 | Predictor Bridge | Sepolia | Dev | TBD |
+| Predictor Bridge (resettable) | Sepolia | Testnet | TBD — paste after first deploy |
 
 ## Bridge overview
 The bridge operates in two directions:
@@ -88,6 +89,16 @@ MAINNET_LEDGER_ADDRESS=
 npm run deploy:bridge:dev
 npm run deploy:bridge:testnet
 npm run deploy:bridge:mainnet
+
+## Resettable Variant (Sepolia only)
+`PredictorBridgeResettable` is a subclass of the production bridge that adds a single owner-gated `reset(...)` function for clearing per-run state between test runs. Production behaviour is inherited unchanged.
+
+`reset(...)` clears the author set internally (the contract knows every authorId it issued) and accepts caller-supplied keys for sparse maps that have no on-chain enumeration: used lower ids, used T2 tx ids, published root hashes, and relayer addresses. It then re-seeds the author set in the same transaction. The owner is preserved across resets. Each reset bumps `resetNonce` and emits `LogReset(nonce)`.
+
+### Deploy
+`npm run deploy:bridge:testnet:resettable`
+
+The script reuses `deploy/deploy-bridge.js` with `BRIDGE_CONTRACT=PredictorBridgeResettable`. The deployed proxy address is permanent — paste it into the contracts table above after the first deploy.
 
 ### Result
 - Persistent proxy deployed and verified on Etherscan
