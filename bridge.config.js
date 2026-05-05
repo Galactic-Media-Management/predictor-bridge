@@ -11,52 +11,78 @@ const bridgeConfig = {
   },
 
   testnet: {
-    owner: '0x0000000000000000000000000000000000000000',
-    feed: '0x0000000000000000000000000000000000000000',
-    pool: '0x0000000000000000000000000000000000000000',
-    sanctions: '0x0000000000000000000000000000000000000000',
-    usdc: '0x0000000000000000000000000000000000000000',
-    usdt: '0x0000000000000000000000000000000000000000',
-    weth: '0x0000000000000000000000000000000000000000',
-    authors: []
+    owner: '0x97AF8c9Ca1e26FF28e67d1e7109c2F342D20a144',
+    feed: '0x01519c462044aEBc7bF9a786005880ecE32AfeeF',
+    pool: '0x01519c462044aEBc7bF9a786005880ecE32AfeeF',
+    sanctions: '0x01519c462044aEBc7bF9a786005880ecE32AfeeF',
+    usdc: '0x01519c462044aEBc7bF9a786005880ecE32AfeeF',
+    usdt: '0x904E2E61E71d186418511A37a6C6D022d69344f4',
+    weth: '0x01519c462044aEBc7bF9a786005880ecE32AfeeF',
+    authors: [
+      {
+        ethAddress: '0x97249Cd69BA44E2F29855a884bC4ff6701d9929d',
+        ethUncompressedPublicKey: '0x0410877db661951b6c3c3fdf3e372cc809edd1760a429c979b5d1259c099cd32dd37dd9dcbb97ed8f69b7ed2f089c639c76530d397842e36db18f657f977a8222a',
+        t2PublicKey: '0x70ba00bb8d9bdbe0d792139f9c4dc152d98b0683ea0f6f9f67f2401176982b19'
+      },
+      {
+        ethAddress: '0xdD7a161770D7477644b29d0A3aD7b796A4880ab4',
+        ethUncompressedPublicKey: '0x04e75e28d2cb588c3f7ff4bef474101aa40d864c85dcf600849687e26c074b3056a3f0ec7867a2a341e2ec1be5a9dba5c1a14eba5b4858ffccc4f66ad611491505',
+        t2PublicKey: '0x8e8d0041d11f5dba1fd5a9b176c963efeaabefd5be4f66948d5a15c0a2aa8618'
+      },
+      {
+        ethAddress: '0x692a1E365FD302Ad4d598617520ab3D272c50A6E',
+        ethUncompressedPublicKey: '0x0451ad82d469e527c864c776a8ecaf45b847bca2230fff304aa6702f6e39d331d882d39f68a9602e61d7b535fbf5516a949162c302e7de4d0e17f8f018ec22edb2',
+        t2PublicKey: '0x607c12ea18e52bee2a185e44cff6373ccb9959dd444785bff386c30ecdc1e717'
+      },
+      {
+        ethAddress: '0x6B1D580fe8DdA058Fa2905D2a3d792a95bF5379A',
+        ethUncompressedPublicKey: '0x04829f3dea719c36b1019288f2369528ea310e096998eb0d0e61600d57e36b03540f4010a88d22880f88f103ec39d303381a087b56c32f9b66baf2d978590ef421',
+        t2PublicKey: '0x74d57e5488955c0746bb4b4b1172752021f26189bb88e9fc4a06b0c3463a511d'
+      },
+      {
+        ethAddress: '0xee608Bd42D2A41919f7F93645b040F3eC5E1670b',
+        ethUncompressedPublicKey: '0x04e61e24348a03ccf82bea7c25beac533c2ff1eccd4fe923460e98f893454c75558e5d8bfef19116ab26957aec64c68d3277191c748e82d12a08e2f28e17a6f3b0',
+        t2PublicKey: '0xdad555a01a7b214087cde50ebbb955160c9d2af65476888183629ee061271a60'
+      }
+    ]
   },
 
   dev: {
-    owner: '0xab5014336704bD59b1148c316CAdbECe27C01f14',
-    feed: '0x44fe4F818B404Cd72FCD022Ae4a9cfd4281eB4b1',
-    pool: '0x44fe4F818B404Cd72FCD022Ae4a9cfd4281eB4b1',
-    sanctions: '0x44fe4F818B404Cd72FCD022Ae4a9cfd4281eB4b1',
-    usdc: '0x44fe4F818B404Cd72FCD022Ae4a9cfd4281eB4b1',
-    usdt: '0x44fe4F818B404Cd72FCD022Ae4a9cfd4281eB4b1',
-    weth: '0x44fe4F818B404Cd72FCD022Ae4a9cfd4281eB4b1',
+    owner: '0x97AF8c9Ca1e26FF28e67d1e7109c2F342D20a144',
+    feed: '0x73B338B277E82f05E74487E321B2e588A0d4E4E3',
+    pool: '0x73B338B277E82f05E74487E321B2e588A0d4E4E3',
+    sanctions: '0x73B338B277E82f05E74487E321B2e588A0d4E4E3',
+    usdc: '0x73B338B277E82f05E74487E321B2e588A0d4E4E3',
+    usdt: '0xC737a683Cf220E46f42577cd8e950ce69AfE2D94',
+    weth: '0x73B338B277E82f05E74487E321B2e588A0d4E4E3',
     authors: [
       {
-        ethAddress: '0x4EFfeDe129e2f74A7Cf8b559Bc7c5713097A7c80',
-        ethUncompressedPublicKey: '0x04485ee3a192eb693ec705eb437f418a46db3dc3616699b80e6bd77a2389366c02999be2111273982218d67ac0513e60f0f5f28ba5ace67891f6f53bb609c51796',
-        t2PublicKey: '0xe07e2bf370c83cc5e587bb043b89e405a08eccf951fbda61a8f59992e79dcf79'
+        ethAddress: '0x0f1dC3B7e07a8E198A70Ae2e167cA54EF4c21635',
+        ethUncompressedPublicKey: '0x04354a1e31f0015e66ab9411bd7aaeb9317c352632b1dc2296b3de6170ac591cced41dbf4dc5304003faf0aba9c37d43a860920c8f17dd0bad6f1e6c05489b7c7b',
+        t2PublicKey: '0xba082380ebb1257e75e52bfc7bb1f5aea0d310676a6c436008e03f2948d3ac0a'
       },
       {
-        ethAddress: '0x906b3D48f9595888d4ea7fd0ea5769438D1628Ac',
-        ethUncompressedPublicKey: '0x043aed797b6ee54187db786592a065c48976221a662beddad8ee4f2cfcf04b5604d3220377abd3f4ed0ff48fc2aa0a25756536f280bea526e04a3ec6783b8bf837',
-        t2PublicKey: '0x724b0c3f8edec4763f1de1aaa763d8b6bbfe898eff0cf84cb0fe21506ba6bc33'
+        ethAddress: '0xEC70c92A562DDDf75EfB4b2A922EEA338FED0D21',
+        ethUncompressedPublicKey: '0x0459c96588a5da5696736e546b19225c1cdc156f549a8d876c7a7d4cdf578a7122a0271e9c0fc5d65d7baa38c86f5c935db0c6950c6fadcff22ea7e2fa75c8de69',
+        t2PublicKey: '0xbc16ae9651730c20af25a0cbca3dea84bf9cb6f32feb53fcb215dc268225c871'
       },
       {
-        ethAddress: '0x360E608b4D6a63646c09A272c02001E21CAb8869',
-        ethUncompressedPublicKey: '0x0497396dd5aa6ab7bede976e440a4f96324a48e612943f95f436242318f35a127aa0c468882d62fe29539f49b9d6f13918dcb7071d3e3b1748b48b95465f8f3f42',
-        t2PublicKey: '0xf4cc92fa71b6cc32d93a10d8e828cc6803bb6ea603c1c70b2b5413f7d6ac853e'
+        ethAddress: '0x8d1423c9ab168147f0a853098E738b2F8f462Ba2',
+        ethUncompressedPublicKey: '0x048e05b95ae7a3b105f1e36e9334dcf697cdb382c97b71ffa5003bddd6dbf0a4cc60cfdd28895e9c52919b4e6ab5d9a217037b127860701fffcbda7b2f1721f0b9',
+        t2PublicKey: '0xdce4542b5c0d24080b984a1e883a0749225f8b12332811453f9bd7c36fa8d339'
       },
       {
-        ethAddress: '0x82baEdC5e93c59F2ac97c0f65bb4499CBd1ba03A',
-        ethUncompressedPublicKey: '0x04ea4210cc61cd598f760dd0f7de1c8458ba16cd2c0fc4bef232e484ca820fd51156ed31480107d1db28682b873e05792e3ae7b666552586a50995f5112fc1d29f',
-        t2PublicKey: '0x6e8e7a18fbcfa0afdb43ebc32e447c162e08129f42b918995660a0e94ddd102b'
+        ethAddress: '0x430E61B21E45aB66877E0af3d10302cBf60f754C',
+        ethUncompressedPublicKey: '0x04f3d3019e7c0a9b027ccb4bf701947d0d7e4114e4120b949f1a0a8b3f4777d842c476453c7563dd4bf20a7bd367c365889a9795a8bb3458ba77f7785acea32968',
+        t2PublicKey: '0xf0fa9d4925459b439076ffa9800c13d65f47e5cf892a0de5cbceec18074a2e4c'
       },
       {
-        ethAddress: '0xB1DD07E7DF6b2f11A9305a98cbcdb7Dc403f9655',
-        ethUncompressedPublicKey: '0x0431ebb34b20b5f9d2761feef8f55ab50a5041634a7e190945ddf9c9c847dd851c45d9a6182da1a627579fce5a99b7d0c97a6929e7ac589826d97aa1adf4059f0e',
-        t2PublicKey: '0x6884166b647a650bfb9670d3d0f316fc6243177ad9465a0165b049577246ef69'
+        ethAddress: '0xe639bdf2779b5D31e840A02F7AFf20bF5a4f3567',
+        ethUncompressedPublicKey: '0x049ed9bfe6048fba6e1aea40bc78db58d21fcf667380c617d5834fb02bcdd7e3b687f0abea99832648701626ab480c9c56f3ad01a3007fa5085cfdd37ee8b9fbb3',
+        t2PublicKey: '0x7aeb0cdf5bc4a343a0d736e257b60c22c449eefffbdf19292d089d20f2bdf513'
       }
     ]
-  }
+  },
 };
 
 export default bridgeConfig;

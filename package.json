@@ -11,6 +11,8 @@
     "coverage": "npx hardhat test --coverage",
     "test": "npx hardhat test",
     "gas": "npx hardhat test --gas-stats",
+    "deploy:relayer-token": "npx hardhat run deploy/deploy-relayer-token.js --network sepolia",
+    "deploy:dummy-erc20": "npx hardhat run deploy/deploy-dummy-erc20.js --network sepolia",
     "deploy:bridge:dev": "cross-env BRIDGE_ENV=dev npx hardhat run deploy/deploy-bridge.js --network sepolia",
     "deploy:bridge:testnet": "cross-env BRIDGE_ENV=testnet npx hardhat run deploy/deploy-bridge.js --network sepolia",
     "deploy:bridge:mainnet": "cross-env BRIDGE_ENV=mainnet npx hardhat run deploy/deploy-bridge.js --network mainnet",

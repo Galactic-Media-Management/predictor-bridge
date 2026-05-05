@@ -12,8 +12,60 @@ The contract supports standard ERC-20 bridging, permit-based lifts, and sponsore
 | Contract | Network | Environment | Address |
 |---|---|---:|---|
 | Predictor Bridge | Mainnet | Production | TBD |
-| Predictor Bridge | Sepolia | Testnet | TBD |
-| Predictor Bridge | Sepolia | Dev | TBD |
+| Predictor Bridge | Sepolia | Testnet | [0xb2f7839A438aD5FF4C99cac855380f2B4D147ea1](https://sepolia.etherscan.io/address/0xb2f7839A438aD5FF4C99cac855380f2B4D147ea1) |
+| Predictor Bridge | Sepolia | Dev | [0x5e0E8c9Af3e9C4aFd3dB69c450e782f5bE9551b5](https://sepolia.etherscan.io/address/0x5e0E8c9Af3e9C4aFd3dB69c450e782f5bE9551b5) |
+
+## Deployment Addresses
+
+### Testnet
+
+#### Contracts
+| Contract | Address |
+|---|---|
+| Relayer USDC | [0x01519c462044aEBc7bF9a786005880ecE32AfeeF](https://sepolia.etherscan.io/address/0x01519c462044aEBc7bF9a786005880ecE32AfeeF) |
+| Dummy USDT | [0x904E2E61E71d186418511A37a6C6D022d69344f4](https://sepolia.etherscan.io/address/0x904E2E61E71d186418511A37a6C6D022d69344f4) |
+| Predictor Bridge | [0xb2f7839A438aD5FF4C99cac855380f2B4D147ea1](https://sepolia.etherscan.io/address/0xb2f7839A438aD5FF4C99cac855380f2B4D147ea1) |
+
+#### Authors
+| Author | Address |
+|---|---|
+| Author 1 | [0x97249Cd69BA44E2F29855a884bC4ff6701d9929d](https://sepolia.etherscan.io/address/0x97249Cd69BA44E2F29855a884bC4ff6701d9929d) |
+| Author 2 | [0xdD7a161770D7477644b29d0A3aD7b796A4880ab4](https://sepolia.etherscan.io/address/0xdD7a161770D7477644b29d0A3aD7b796A4880ab4) |
+| Author 3 | [0x692a1E365FD302Ad4d598617520ab3D272c50A6E](https://sepolia.etherscan.io/address/0x692a1E365FD302Ad4d598617520ab3D272c50A6E) |
+| Author 4 | [0x6B1D580fe8DdA058Fa2905D2a3d792a95bF5379A](https://sepolia.etherscan.io/address/0x6B1D580fe8DdA058Fa2905D2a3d792a95bF5379A) |
+| Author 5 | [0xee608Bd42D2A41919f7F93645b040F3eC5E1670b](https://sepolia.etherscan.io/address/0xee608Bd42D2A41919f7F93645b040F3eC5E1670b) |
+
+#### Relayers
+| Relayer | Address |
+|---|---|
+| Relayer 1 | [0xe7BBa60d3352CbAa7e1e1A7487183c68B82A35b2](https://sepolia.etherscan.io/address/0xe7BBa60d3352CbAa7e1e1A7487183c68B82A35b2) |
+| Relayer 2 | [0xdf2918dE413E2Cd1C3dbb972c8377C063E6F092c](https://sepolia.etherscan.io/address/0xdf2918dE413E2Cd1C3dbb972c8377C063E6F092c) |
+| Relayer 3 | [0x40aF08546D41E119db1f70744ef4bE485Be7Cb2A](https://sepolia.etherscan.io/address/0x40aF08546D41E119db1f70744ef4bE485Be7Cb2A) |
+
+### Dev
+
+#### Contracts
+| Contract | Address |
+|---|---|
+| Relayer USDC | [0x73B338B277E82f05E74487E321B2e588A0d4E4E3](https://sepolia.etherscan.io/address/0x73B338B277E82f05E74487E321B2e588A0d4E4E3) |
+| Dummy USDT | [0xC737a683Cf220E46f42577cd8e950ce69AfE2D94](https://sepolia.etherscan.io/address/0xC737a683Cf220E46f42577cd8e950ce69AfE2D94) |
+| Predictor Bridge | [0x5e0E8c9Af3e9C4aFd3dB69c450e782f5bE9551b5](https://sepolia.etherscan.io/address/0x5e0E8c9Af3e9C4aFd3dB69c450e782f5bE9551b5) |
+
+#### Authors
+| Author | Address |
+|---|---|
+| Author 1 | [0x0f1dC3B7e07a8E198A70Ae2e167cA54EF4c21635](https://sepolia.etherscan.io/address/0x0f1dC3B7e07a8E198A70Ae2e167cA54EF4c21635) |
+| Author 2 | [0xEC70c92A562DDDf75EfB4b2A922EEA338FED0D21](https://sepolia.etherscan.io/address/0xEC70c92A562DDDf75EfB4b2A922EEA338FED0D21) |
+| Author 3 | [0x8d1423c9ab168147f0a853098E738b2F8f462Ba2](https://sepolia.etherscan.io/address/0x8d1423c9ab168147f0a853098E738b2F8f462Ba2) |
+| Author 4 | [0x430E61B21E45aB66877E0af3d10302cBf60f754C](https://sepolia.etherscan.io/address/0x430E61B21E45aB66877E0af3d10302cBf60f754C) |
+| Author 5 | [0xe639bdf2779b5D31e840A02F7AFf20bF5a4f3567](https://sepolia.etherscan.io/address/0xe639bdf2779b5D31e840A02F7AFf20bF5a4f3567) |
+
+#### Relayers
+| Relayer | Address |
+|---|---|
+| Relayer 1 | [0xCaf887dC7dB6B4b44D9a97e46998Ca4dB6f767Ea](https://sepolia.etherscan.io/address/0xCaf887dC7dB6B4b44D9a97e46998Ca4dB6f767Ea) |
+| Relayer 2 | [0x29cB5A57D62bA22bbb6a5Efe3fD520F03c840291](https://sepolia.etherscan.io/address/0x29cB5A57D62bA22bbb6a5Efe3fD520F03c840291) |
+| Relayer 3 | [0xA39239acB1E7faA1419482e767A1195b1f81F82c](https://sepolia.etherscan.io/address/0xA39239acB1E7faA1419482e767A1195b1f81F82c) |
 
 ## Bridge overview
 The bridge operates in two directions:
