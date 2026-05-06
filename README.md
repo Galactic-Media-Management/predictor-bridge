@@ -9,6 +9,7 @@ The bridge is secured by a threshold of Predictor Network authors, who collectiv
 The contract supports standard ERC-20 bridging, permit-based lifts, and sponsored USDC bridge actions via relayers.
 
 ## Contracts
+
 | Contract | Network | Environment | Address |
 |---|---|---:|---|
 | Predictor Bridge | Mainnet | Production | TBD |
@@ -20,6 +21,7 @@ The contract supports standard ERC-20 bridging, permit-based lifts, and sponsore
 ### Testnet
 
 #### Contracts
+
 | Contract | Address |
 |---|---|
 | Relayer USDC | [0x01519c462044aEBc7bF9a786005880ecE32AfeeF](https://sepolia.etherscan.io/address/0x01519c462044aEBc7bF9a786005880ecE32AfeeF) |
@@ -27,6 +29,7 @@ The contract supports standard ERC-20 bridging, permit-based lifts, and sponsore
 | Predictor Bridge | [0xb2f7839A438aD5FF4C99cac855380f2B4D147ea1](https://sepolia.etherscan.io/address/0xb2f7839A438aD5FF4C99cac855380f2B4D147ea1) |
 
 #### Authors
+
 | Author | Address |
 |---|---|
 | Author 1 | [0x97249Cd69BA44E2F29855a884bC4ff6701d9929d](https://sepolia.etherscan.io/address/0x97249Cd69BA44E2F29855a884bC4ff6701d9929d) |
@@ -36,6 +39,7 @@ The contract supports standard ERC-20 bridging, permit-based lifts, and sponsore
 | Author 5 | [0xee608Bd42D2A41919f7F93645b040F3eC5E1670b](https://sepolia.etherscan.io/address/0xee608Bd42D2A41919f7F93645b040F3eC5E1670b) |
 
 #### Relayers
+
 | Relayer | Address |
 |---|---|
 | Relayer 1 | [0xe7BBa60d3352CbAa7e1e1A7487183c68B82A35b2](https://sepolia.etherscan.io/address/0xe7BBa60d3352CbAa7e1e1A7487183c68B82A35b2) |
@@ -45,6 +49,7 @@ The contract supports standard ERC-20 bridging, permit-based lifts, and sponsore
 ### Dev
 
 #### Contracts
+
 | Contract | Address |
 |---|---|
 | Relayer USDC | [0x73B338B277E82f05E74487E321B2e588A0d4E4E3](https://sepolia.etherscan.io/address/0x73B338B277E82f05E74487E321B2e588A0d4E4E3) |
@@ -52,6 +57,7 @@ The contract supports standard ERC-20 bridging, permit-based lifts, and sponsore
 | Predictor Bridge | [0x5e0E8c9Af3e9C4aFd3dB69c450e782f5bE9551b5](https://sepolia.etherscan.io/address/0x5e0E8c9Af3e9C4aFd3dB69c450e782f5bE9551b5) |
 
 #### Authors
+
 | Author | Address |
 |---|---|
 | Author 1 | [0x0f1dC3B7e07a8E198A70Ae2e167cA54EF4c21635](https://sepolia.etherscan.io/address/0x0f1dC3B7e07a8E198A70Ae2e167cA54EF4c21635) |
@@ -61,6 +67,7 @@ The contract supports standard ERC-20 bridging, permit-based lifts, and sponsore
 | Author 5 | [0xe639bdf2779b5D31e840A02F7AFf20bF5a4f3567](https://sepolia.etherscan.io/address/0xe639bdf2779b5D31e840A02F7AFf20bF5a4f3567) |
 
 #### Relayers
+
 | Relayer | Address |
 |---|---|
 | Relayer 1 | [0xCaf887dC7dB6B4b44D9a97e46998Ca4dB6f767Ea](https://sepolia.etherscan.io/address/0xCaf887dC7dB6B4b44D9a97e46998Ca4dB6f767Ea) |
@@ -84,6 +91,7 @@ The bridge operates in two directions:
 - Chainalysis sanctions checks on supported user entrypoints
 
 ## Lift methods
+
 | Method                          | User TX Required | Caller  | Allowed Tokens     | Destination Account Format  | Account Type      |
 |---------------------------------|:----------------:|:-------:|--------------------|-----------------------------|-------------------|
 | `lift`                          | 2                | User    | Any ERC20          | Explicit `bytes32`          | Base account      |
@@ -92,7 +100,6 @@ The bridge operates in two directions:
 | `predictionMarketPermitLift`    | 1                | User    | USDC               | Derived from caller address | Prediction market |
 | `predictionMarketRecipientLift` | 2                | User    | USDC / USDT        | Explicit `bytes32`          | Prediction market |
 | `relayerLift`                   | 0                | Relayer | USDC               | Derived from user address   | Prediction market |
-
 
 ## External Contract Dependencies
 - Chainlink USDC/ETH Feed\

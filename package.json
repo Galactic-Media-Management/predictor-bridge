@@ -5,9 +5,10 @@
   "author": "Galactic Media",
   "license": "GPL-3.0-only",
   "scripts": {
-    "format": "npm run pretty:fix && npm run pretty:sol",
+    "format": "npm run pretty:fix && npm run pretty:sol && npm run pretty:docs",
     "pretty:fix": "prettier --config ./.prettierrc.json --write \"**/*.{js,json}\"",
     "pretty:sol": "npx prettier --write --plugin=prettier-plugin-solidity contracts/**/*.sol",
+    "pretty:docs": "prettier --config ./.prettierrc.json --write README.md",
     "coverage": "npx hardhat test --coverage",
     "test": "npx hardhat test",
     "gas": "npx hardhat test --gas-stats",

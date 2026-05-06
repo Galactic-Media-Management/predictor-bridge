@@ -16,7 +16,6 @@ contract RelayerToken is Initializable, IChainalysis, ERC20Upgradeable, ERC20Per
   int256 public constant latestAnswer = 200000000000000; // $5000 per ETH
   string public constant version = '1';
 
-  /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
   }
@@ -47,6 +46,7 @@ contract RelayerToken is Initializable, IChainalysis, ERC20Upgradeable, ERC20Per
 
     (bool success, ) = msg.sender.call{ value: amount }('');
     assembly {
+      // Intentionally ignored: this test helper mirrors the production callback shape without enforcing ETH liquidity.
       pop(success)
     }
   }

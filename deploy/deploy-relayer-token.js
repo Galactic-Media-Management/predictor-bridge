@@ -1,8 +1,6 @@
 import hre, { network } from 'hardhat';
 import { printBalances, verifyContract, verifyProxyOnEtherscan } from './helper.js';
 
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
-
 async function main() {
   const { ethers, networkName } = await network.create();
 
@@ -10,8 +8,8 @@ async function main() {
     throw new Error(`RelayerToken helper is intended for sepolia, got ${networkName}`);
   }
 
-  const testnetBridge = process.env.TESTNET_BRIDGE || ZERO_ADDRESS;
-  const devBridge = process.env.DEV_BRIDGE || ZERO_ADDRESS;
+  const testnetBridge = process.env.TESTNET_BRIDGE || ethers.ZeroAddress;
+  const devBridge = process.env.DEV_BRIDGE || ethers.ZeroAddress;
 
   const [deployer] = await ethers.getSigners();
   const beforeBalance = await ethers.provider.getBalance(deployer.address);
