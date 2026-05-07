@@ -4,11 +4,12 @@ pragma solidity 0.8.34;
 import './PredictorBridge.sol';
 
 /**
- * @dev Testnet-only variant of PredictorBridge that adds an owner-gated reset() to wipe per-run state
- * and re-seed the author set in a single transaction. Production behaviour is inherited unchanged.
+ * @dev Testnet-only variant of PredictorBridge that adds owner-gated resets for use between test runs.
+ * Production behaviour is inherited unchanged.
  */
 contract PredictorBridgeResettable is PredictorBridge {
   event LogReset(uint32 indexed nonce);
+  event LogAuthorsReset();
 
   uint32 public resetNonce;
 
@@ -17,29 +18,39 @@ contract PredictorBridgeResettable is PredictorBridge {
   {}
 
   /**
-   * @dev Wipes per-run bridge state and re-seeds the author set.
+   * @dev Wipes per-run sparse bridge state. Lower ids and T2 tx ids are issued consecutively, so the
+   * caller passes the highest id seen during the run and the contract clears every bitmap bucket
+   * up to that id. Published root hashes are sparse with no enumeration, so the caller passes them.
    *
-   * Author state (bitmaps + four mappings + counters) is cleared internally — the contract knows
-   * every authorId it has issued via nextAuthorId. Sparse maps without a counter (used lowers,
-   * used T2 tx ids, published roots, relayer balances) cannot be enumerated, so the caller passes
-   * the keys it created during the run.
+   * Authors and owner are preserved — use resetAuthors to swap the author set, and the existing
+   * registerRelayer / deregisterRelayer functions to manage relayer balances.
    *
-   * Owner is preserved across resets.
-   *
-   * @param lowerIds Lower ids to clear from usedLowers.
-   * @param t2TxIds T2 transaction ids to clear from usedT2TxIds.
+   * @param lastLowerId Highest lower id issued during the run.
+   * @param lastT2TxId Highest T2 tx id observed during the run.
    * @param rootHashes Published root hashes to clear.
-   * @param relayers Relayer addresses to clear (does not refund any USDC balance).
-   * @param t1Addresses Initial author T1 addresses for the next run.
+   */
+  function resetState(uint32 lastLowerId, uint32 lastT2TxId, bytes32[] calldata rootHashes) external onlyOwner {
+    uint256 lastBucket = uint256(lastLowerId) >> 8;
+    for (uint256 b; b <= lastBucket; ++b) delete usedLowers[b];
+
+    lastBucket = uint256(lastT2TxId) >> 8;
+    for (uint256 b; b <= lastBucket; ++b) delete usedT2TxIds[b];
+
+    for (uint256 i; i < rootHashes.length; ++i) delete isPublishedRootHash[rootHashes[i]];
+
+    emit LogReset(++resetNonce);
+  }
+
+  /**
+   * @dev Clears the existing author set and re-seeds it with the supplied authors. Author state
+   * is fully enumerable via nextAuthorId so no external keys are required.
+   *
+   * @param t1Addresses Replacement author T1 addresses.
    * @param t1PubKeysLHS Left-hand 32 bytes of each uncompressed T1 public key.
    * @param t1PubKeysRHS Right-hand 32 bytes of each uncompressed T1 public key.
-   * @param t2PubKeys Initial author T2 public keys for the next run.
+   * @param t2PubKeys Replacement author T2 public keys.
    */
-  function reset(
-    uint32[] calldata lowerIds,
-    uint32[] calldata t2TxIds,
-    bytes32[] calldata rootHashes,
-    address[] calldata relayers,
+  function resetAuthors(
     address[] calldata t1Addresses,
     bytes32[] calldata t1PubKeysLHS,
     bytes32[] calldata t1PubKeysRHS,
@@ -57,19 +68,8 @@ contract PredictorBridgeResettable is PredictorBridge {
     numActiveAuthors = 0;
     nextAuthorId = 1;
 
-    for (uint256 i; i < lowerIds.length; ++i) {
-      (uint256 bucket, uint256 mask) = _idToBitmap(lowerIds[i]);
-      usedLowers[bucket] &= ~mask;
-    }
-    for (uint256 i; i < t2TxIds.length; ++i) {
-      (uint256 bucket, uint256 mask) = _idToBitmap(t2TxIds[i]);
-      usedT2TxIds[bucket] &= ~mask;
-    }
-    for (uint256 i; i < rootHashes.length; ++i) delete isPublishedRootHash[rootHashes[i]];
-    for (uint256 i; i < relayers.length; ++i) delete relayerBalance[relayers[i]];
-
     _initialiseAuthors(t1Addresses, t1PubKeysLHS, t1PubKeysRHS, t2PubKeys);
 
-    emit LogReset(++resetNonce);
+    emit LogAuthorsReset();
   }
 }

@@ -91,9 +91,10 @@ npm run deploy:bridge:testnet
 npm run deploy:bridge:mainnet
 
 ## Resettable Variant (Sepolia only)
-`PredictorBridgeResettable` is a subclass of the production bridge that adds a single owner-gated `reset(...)` function for clearing per-run state between test runs. Production behaviour is inherited unchanged.
+`PredictorBridgeResettable` is a subclass of the production bridge that adds two owner-gated reset functions for use between test runs. Production behaviour is inherited unchanged. Owner is preserved across both calls.
 
-`reset(...)` clears the author set internally (the contract knows every authorId it issued) and accepts caller-supplied keys for sparse maps that have no on-chain enumeration: used lower ids, used T2 tx ids, published root hashes, and relayer addresses. It then re-seeds the author set in the same transaction. The owner is preserved across resets. Each reset bumps `resetNonce` and emits `LogReset(nonce)`.
+- `resetState(lastLowerId, lastT2TxId, rootHashes)` wipes per-run sparse state. Lower ids and T2 tx ids are issued consecutively, so the caller passes only the highest id seen during the run and the contract clears every bitmap bucket up to it. Published root hashes have no on-chain enumeration and are passed explicitly. Bumps `resetNonce` and emits `LogReset(nonce)`. Author set and relayer balances are untouched — use the existing `registerRelayer` / `deregisterRelayer` to manage relayers.
+- `resetAuthors(t1Addresses, t1PubKeysLHS, t1PubKeysRHS, t2PubKeys)` clears the existing author set (the contract enumerates it via `nextAuthorId`) and re-seeds with the supplied authors. Emits `LogAuthorsReset()`.
 
 ### Deploy
 `npm run deploy:bridge:testnet:resettable`

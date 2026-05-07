@@ -14,77 +14,76 @@ describe('PredictorBridgeResettable', function () {
   let ethers;
   let owner;
   let user;
-  let relayer;
   let bridge;
   let token;
-  let usdc;
   let originalAuthors;
 
   beforeEach(async () => {
     await init({ numAuthors: 6 });
     ethers = getEthers();
-    [owner, user, relayer] = getAccounts();
+    [owner, user] = getAccounts();
     originalAuthors = getAuthors().slice(0, 5);
-    ({ bridge, token, usdc } = await deployFixture({ numAuthors: 5, contractName: 'PredictorBridgeResettable' }));
+    ({ bridge, token } = await deployFixture({ numAuthors: 5, contractName: 'PredictorBridgeResettable' }));
   });
 
-  it('clears bridge state and re-seeds author set in one transaction', async () => {
+  it('resetState clears per-run bridge state and bumps the nonce', async () => {
     const amount = 100n;
 
     await token.approve(bridge.target, amount);
     await bridge.lift(token.target, await bridge.deriveT2PublicKey(owner.address), amount);
 
     const merkleTree = await createTreeAndPublishRoot(bridge, token.target, amount, owner.address);
-    const lastPublishedTxId = 1;
+    const lastT2TxId = 1;
 
     const [lowerProof, lowerId] = await createLowerProof(bridge, token, amount, user);
     await bridge.claimLower(lowerProof);
 
-    await bridge.registerRelayer(relayer.address);
-
     expect(await bridge.isPublishedRootHash(merkleTree.rootHash)).to.equal(true);
     expect(await bridge.isUsedLower(lowerId)).to.equal(true);
-    expect(await bridge.relayerBalance(relayer.address)).to.equal(1);
-    expect(await bridge.numActiveAuthors()).to.equal(5n);
-    expect(await bridge.t1AddressToId(originalAuthors[0].t1Address)).to.not.equal(0);
-    expect(await bridge.corroborate(lastPublishedTxId, 0)).to.equal(1);
+    expect(await bridge.corroborate(lastT2TxId, 0)).to.equal(1);
     expect(await bridge.resetNonce()).to.equal(0);
 
-    const replacementSource = getAuthors().slice(5, 6).concat(getAuthors().slice(0, 3));
-    const fundedSigners = await Promise.all(replacementSource.map(a => ethers.Wallet.createRandom().connect(ethers.provider)));
-    await Promise.all(fundedSigners.map(s => owner.sendTransaction({ to: s.address, value: ethers.parseEther('1') })));
-    const replacementAuthors = fundedSigners.map(s => toAuthorAccount(s));
+    await expect(bridge.resetState(lowerId, lastT2TxId, [merkleTree.rootHash])).to.emit(bridge, 'LogReset').withArgs(1);
+
+    expect(await bridge.isPublishedRootHash(merkleTree.rootHash)).to.equal(false);
+    expect(await bridge.isUsedLower(lowerId)).to.equal(false);
+    expect(await bridge.corroborate(lastT2TxId, 0)).to.equal(-1);
+    expect(await bridge.resetNonce()).to.equal(1);
+  });
+
+  it('resetState preserves the existing author set', async () => {
+    await bridge.resetState(0, 0, []);
+
+    expect(await bridge.numActiveAuthors()).to.equal(BigInt(originalAuthors.length));
+    for (const author of originalAuthors) {
+      const id = await bridge.t1AddressToId(author.t1Address);
+      expect(id).to.not.equal(0);
+      expect(await bridge.isAuthor(id)).to.equal(true);
+      expect(await bridge.authorIsActive(id)).to.equal(true);
+    }
+  });
+
+  it('resetAuthors clears existing authors and re-seeds with replacements', async () => {
+    const replacementAuthors = [];
     while (replacementAuthors.length < 4) {
-      const fresh = ethers.Wallet.createRandom().connect(ethers.provider);
-      await owner.sendTransaction({ to: fresh.address, value: ethers.parseEther('1') });
-      replacementAuthors.push(toAuthorAccount(fresh));
+      const signer = ethers.Wallet.createRandom().connect(ethers.provider);
+      await owner.sendTransaction({ to: signer.address, value: ethers.parseEther('1') });
+      replacementAuthors.push(toAuthorAccount(signer));
     }
 
     await expect(
-      bridge.reset(
-        [lowerId],
-        [lastPublishedTxId],
-        [merkleTree.rootHash],
-        [relayer.address],
+      bridge.resetAuthors(
         replacementAuthors.map(a => a.t1Address),
         replacementAuthors.map(a => a.t1PubKeyLHS),
         replacementAuthors.map(a => a.t1PubKeyRHS),
         replacementAuthors.map(a => a.t2PubKey)
       )
-    )
-      .to.emit(bridge, 'LogReset')
-      .withArgs(1);
+    ).to.emit(bridge, 'LogAuthorsReset');
 
-    expect(await bridge.isPublishedRootHash(merkleTree.rootHash)).to.equal(false);
-    expect(await bridge.isUsedLower(lowerId)).to.equal(false);
-    expect(await bridge.relayerBalance(relayer.address)).to.equal(0);
-    expect(await bridge.corroborate(lastPublishedTxId, 0)).to.equal(-1);
-
-    for (const oldAuthor of originalAuthors) {
-      expect(await bridge.t1AddressToId(oldAuthor.t1Address)).to.equal(0);
-      expect(await bridge.t2PubKeyToId(oldAuthor.t2PubKey)).to.equal(0);
+    for (const old of originalAuthors) {
+      expect(await bridge.t1AddressToId(old.t1Address)).to.equal(0);
+      expect(await bridge.t2PubKeyToId(old.t2PubKey)).to.equal(0);
     }
-
     expect(await bridge.numActiveAuthors()).to.equal(BigInt(replacementAuthors.length));
     expect(await bridge.nextAuthorId()).to.equal(BigInt(replacementAuthors.length + 1));
     for (let i = 0; i < replacementAuthors.length; i++) {
@@ -94,11 +93,11 @@ describe('PredictorBridgeResettable', function () {
       expect(await bridge.isAuthor(id)).to.equal(true);
       expect(await bridge.authorIsActive(id)).to.equal(true);
     }
-    expect(await bridge.resetNonce()).to.equal(1);
   });
 
-  it('rejects non-owner reset', async () => {
-    await expect(bridge.connect(user).reset([], [], [], [], [], [], [], [])).to.be.revertedWithCustomError(bridge, 'OwnableUnauthorizedAccount');
+  it('rejects non-owner calls to resetState and resetAuthors', async () => {
+    await expect(bridge.connect(user).resetState(0, 0, [])).to.be.revertedWithCustomError(bridge, 'OwnableUnauthorizedAccount');
+    await expect(bridge.connect(user).resetAuthors([], [], [], [])).to.be.revertedWithCustomError(bridge, 'OwnableUnauthorizedAccount');
   });
 
   it('preserves owner across resets', async () => {
@@ -109,11 +108,8 @@ describe('PredictorBridgeResettable', function () {
       fresh.push(toAuthorAccount(signer));
     }
 
-    await bridge.reset(
-      [],
-      [],
-      [],
-      [],
+    await bridge.resetState(0, 0, []);
+    await bridge.resetAuthors(
       fresh.map(a => a.t1Address),
       fresh.map(a => a.t1PubKeyLHS),
       fresh.map(a => a.t1PubKeyRHS),
@@ -123,7 +119,7 @@ describe('PredictorBridgeResettable', function () {
     expect(await bridge.owner()).to.equal(owner.address);
   });
 
-  it('lets the same lowerId be claimed again after reset', async () => {
+  it('lets the same lowerId be claimed again after resetState', async () => {
     const amount = 50n;
     await token.approve(bridge.target, amount * 2n);
     await bridge.lift(token.target, await bridge.deriveT2PublicKey(owner.address), amount * 2n);
@@ -132,19 +128,10 @@ describe('PredictorBridgeResettable', function () {
     await bridge.claimLower(firstProof);
     await expect(bridge.claimLower(firstProof)).to.be.revertedWithCustomError(bridge, 'LowerIsUsed');
 
-    const replacementAuthors = getAuthors().slice(0, 5);
-
-    await bridge.reset(
-      [lowerId],
-      [],
-      [],
-      [],
-      replacementAuthors.map(a => a.t1Address),
-      replacementAuthors.map(a => a.t1PubKeyLHS),
-      replacementAuthors.map(a => a.t1PubKeyRHS),
-      replacementAuthors.map(a => a.t2PubKey)
-    );
-
+    await bridge.resetState(lowerId, 0, []);
     expect(await bridge.isUsedLower(lowerId)).to.equal(false);
+
+    await bridge.claimLower(firstProof);
+    expect(await bridge.isUsedLower(lowerId)).to.equal(true);
   });
 });

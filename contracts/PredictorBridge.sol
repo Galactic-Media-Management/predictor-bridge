@@ -739,7 +739,7 @@ contract PredictorBridge is IPredictorBridge, Initializable, IUniswapV3Callback,
     }
   }
 
-  function _idToBitmap(uint32 id) internal pure returns (uint256 bucket, uint256 mask) {
+  function _idToBitmap(uint32 id) private pure returns (uint256 bucket, uint256 mask) {
     bucket = uint256(id) >> 8;
     mask = 1 << (uint256(id) & 255);
   }
