@@ -15,6 +15,7 @@ The contract supports standard ERC-20 bridging, permit-based lifts, and sponsore
 | Predictor Bridge | Mainnet | Production | TBD |
 | Predictor Bridge | Sepolia | Testnet | [0xb2f7839A438aD5FF4C99cac855380f2B4D147ea1](https://sepolia.etherscan.io/address/0xb2f7839A438aD5FF4C99cac855380f2B4D147ea1) |
 | Predictor Bridge | Sepolia | Dev | [0x5e0E8c9Af3e9C4aFd3dB69c450e782f5bE9551b5](https://sepolia.etherscan.io/address/0x5e0E8c9Af3e9C4aFd3dB69c450e782f5bE9551b5) |
+| Predictor Bridge (resettable) | Sepolia | Testnet | TBD — paste after first deploy |
 
 ## Deployment Addresses
 
@@ -147,6 +148,17 @@ MAINNET_LEDGER_ADDRESS=
 npm run deploy:bridge:dev
 npm run deploy:bridge:testnet
 npm run deploy:bridge:mainnet
+
+## Resettable Variant (Sepolia only)
+`PredictorBridgeResettable` is a subclass of the production bridge that adds two owner-gated reset functions for use between test runs. Production behaviour is inherited unchanged. Owner is preserved across both calls.
+
+- `resetState(lastLowerId, lastT2TxId, rootHashes)` wipes per-run sparse state. Lower ids and T2 tx ids are issued consecutively, so the caller passes only the highest id seen during the run and the contract clears every bitmap bucket up to it. Published root hashes have no on-chain enumeration and are passed explicitly. Bumps `resetNonce` and emits `LogReset(nonce)`. Author set and relayer balances are untouched — use the existing `registerRelayer` / `deregisterRelayer` to manage relayers.
+- `resetAuthors(t1Addresses, t1PubKeysLHS, t1PubKeysRHS, t2PubKeys)` clears the existing author set (the contract enumerates it via `nextAuthorId`) and re-seeds with the supplied authors. Emits `LogAuthorsReset()`.
+
+### Deploy
+`npm run deploy:bridge:testnet:resettable`
+
+The script reuses `deploy/deploy-bridge.js` with `BRIDGE_CONTRACT=PredictorBridgeResettable`. The deployed proxy address is permanent — paste it into the contracts table above after the first deploy.
 
 ### Result
 - Persistent proxy deployed and verified on Etherscan

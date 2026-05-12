@@ -282,10 +282,10 @@ async function createLowerProof(bridge, token, amount, recipient, t2Sender = ran
   return [ethers.concat([lowerDataBytes, ethers.concat(confirmations)]), id, t2Sender, t2Timestamp];
 }
 
-async function deployFixture({ numAuthors = 6 } = {}) {
+async function deployFixture({ numAuthors = 6, contractName = 'PredictorBridge' } = {}) {
   const [owner] = accounts;
 
-  const PredictorBridge = await ethers.getContractFactory('PredictorBridge');
+  const PredictorBridge = await ethers.getContractFactory(contractName);
   const ERC1967Proxy = await ethers.getContractFactory('ERC1967Proxy');
 
   const Feed = await ethers.getContractFactory('MockChainlinkV3Aggregator');

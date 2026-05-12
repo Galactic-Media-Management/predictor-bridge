@@ -22,20 +22,22 @@ async function main() {
   const bridgeArgs = getBridgeArgs(env);
   const initArgs = getInitArgs(env);
 
+  const contractName = process.env.BRIDGE_CONTRACT || 'PredictorBridge';
   const [deployer] = await ethers.getSigners();
   const beforeBalance = await ethers.provider.getBalance(deployer.address);
 
   console.log(`Deployer: ${deployer.address}`);
   console.log(`Env: ${env}`);
   console.log(`Network: ${networkName}`);
+  console.log(`Contract: ${contractName}`);
   console.log('Deploying: implementation and proxy');
 
-  const PredictorBridge = await ethers.getContractFactory('PredictorBridge');
-  const implementation = await PredictorBridge.deploy(...bridgeArgs);
+  const Bridge = await ethers.getContractFactory(contractName);
+  const implementation = await Bridge.deploy(...bridgeArgs);
   await implementation.waitForDeployment();
 
   const implementationAddress = await implementation.getAddress();
-  const initData = PredictorBridge.interface.encodeFunctionData('initialize', initArgs);
+  const initData = Bridge.interface.encodeFunctionData('initialize', initArgs);
 
   const ERC1967Proxy = await ethers.getContractFactory('ERC1967Proxy');
   const proxy = await ERC1967Proxy.deploy(implementationAddress, initData);
@@ -50,7 +52,7 @@ async function main() {
   const afterBalance = await ethers.provider.getBalance(deployer.address);
   printBalances(ethers, beforeBalance, afterBalance);
 
-  console.log(`\nPredictor Bridge: ${proxyAddress}`);
+  console.log(`\n${contractName}: ${proxyAddress}`);
   console.log('\nDone.');
 }
 
