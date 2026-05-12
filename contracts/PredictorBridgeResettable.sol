@@ -31,14 +31,31 @@ contract PredictorBridgeResettable is PredictorBridge {
    */
   function resetState(uint32 lastLowerId, uint32 lastT2TxId, bytes32[] calldata rootHashes) external onlyOwner {
     uint256 lastBucket = uint256(lastLowerId) >> 8;
-    for (uint256 b; b <= lastBucket; ++b) delete usedLowers[b];
+    for (uint256 b; b <= lastBucket; ) {
+      delete usedLowers[b];
+      unchecked {
+        ++b;
+      }
+    }
 
     lastBucket = uint256(lastT2TxId) >> 8;
-    for (uint256 b; b <= lastBucket; ++b) delete usedT2TxIds[b];
+    for (uint256 b; b <= lastBucket; ) {
+      delete usedT2TxIds[b];
+      unchecked {
+        ++b;
+      }
+    }
 
-    for (uint256 i; i < rootHashes.length; ++i) delete isPublishedRootHash[rootHashes[i]];
+    for (uint256 i; i < rootHashes.length; ) {
+      delete isPublishedRootHash[rootHashes[i]];
+      unchecked {
+        ++i;
+      }
+    }
 
-    emit LogReset(++resetNonce);
+    unchecked {
+      emit LogReset(++resetNonce);
+    }
   }
 
   /**
@@ -57,11 +74,14 @@ contract PredictorBridgeResettable is PredictorBridge {
     bytes32[] calldata t2PubKeys
   ) external onlyOwner {
     uint256 next = nextAuthorId;
-    for (uint256 id = 1; id < next; ++id) {
+    for (uint256 id = 1; id < next; ) {
       delete t1AddressToId[idToT1Address[id]];
       delete t2PubKeyToId[idToT2PubKey[id]];
       delete idToT1Address[id];
       delete idToT2PubKey[id];
+      unchecked {
+        ++id;
+      }
     }
     isAuthorBitmap = 0;
     authorIsActiveBitmap = 0;
